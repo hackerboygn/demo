@@ -30,71 +30,41 @@
             /*font-weight: bolder;*/
             position: relative;
         }
-        .temphumishow{
+        .wanlanshow{
             margin: 5px 12px;
             height: 94px;
             background-color: #FFFFFF;
             text-align: center;
             box-shadow: 3px 3px 3px #e1e1e1;
         }
-        .temphumishow table tr td img{
+        .wanlanshow table tr td img{
             height: 50px;
         }
-        .tempcls{
+        .wancls{
             font-size: 30px;
             color: #e13e4e; 
         }
-        .humicls{
+        .lancls{
             font-size: 30px;
             color: #80a72d; 
-        }
-        .switrgbhow{
-            margin: 5px 12px;
-            height: 114px;
-            background-color: #FFFFFF;
-            text-align: center;
-            box-shadow: 3px 3px 3px #e1e1e1;
-        }        
-        .switrgbhow table tr td img{
-            height: 70px;
-        }
-        .humihis{
-            margin: 5px 12px;
-            height: 215px;
-            background-color: #FFFFFF;
-            text-align: center;
-            box-shadow: 3px 3px 3px #e1e1e1;
         }
     </style>
 </head>
 <body>
     <div class="content">
         <div class="title">
-          <span>温湿度实时检测</span>
+          <span>网络流量实时检测</span>
         </div>        
-        <div class="temphumishow">
+        <div class="wanlanshow">
             <table width="100%" height="94px">
                 <tr align="center">
                     <td valign="middle" align="right"><img src="./image/01-temperature.svg" alt=""></td>
-                    <td valign="middle" align="left">&nbsp;&nbsp;<span>温度</span><br/>&nbsp;&nbsp;<span class="tempcls" id="tempid">28℃</span></td>
+                    <td valign="middle" align="left">&nbsp;&nbsp;<span>WAN</span><br/>&nbsp;&nbsp;<span class="wancls" id="wanid">0KB/s</span></td>
                     <td valign="middle" align="right"><img src="./image/01-humidity.svg" alt=""></td>
-                    <td valign="middle" align="left">&nbsp;&nbsp;<span>湿度</span><br/>&nbsp;&nbsp;<span class="humicls" id="humiid">42%</span></td>
+                    <td valign="middle" align="left">&nbsp;&nbsp;<span>LAN</span><br/>&nbsp;&nbsp;<span class="lancls" id="lanid">0KB/s</span></td>
                 </tr>
             </table>
         </div>        
-        <div class="switrgbhow">
-            <table width="100%">
-                <tr align="center" height="114px">
-                    <td valign="middle"><img id="switchbtn" src="./image/03-turn-on.svg" alt=""><br/><span id="switchspan">开</span></td>
-                    <!-- <td valign="middle"><hr class="hrline" size="80" /></td> -->
-                    <td valign="middle"><img id="rgbimgid" src="./image/02-red.svg" alt=""><br/><span>温度阀值</span></td>
-                </tr>                
-            </table>
-        </div>
-        <!-- <div class="humihis">
-            <div id="device_id"></div>
-            <div id="debug"></div>
-        </div> -->
     </div>
 </div>
 <script src="./js/mqttws31.js"></script>
@@ -172,60 +142,18 @@
             // console.log('设备上报:' +  message.payloadString);
             msgjson = $.parseJSON(message.payloadString);
             // console.log('温度 ' +  msgjson.dht11_temperature);
-            var tempval = msgjson.dht11_temperature;
+
+			var waninval = msgjson.snmp_wanin;
+			var wanoutval = msgjson.snmp_wanout;
+			var laninval = msgjson.snmp_lanin;
+			var lanoutval = msgjson.snmp_lanout;
             // console.log('温度2 ' +  tempval);
             if("undefined" != typeof(tempval)){
-                // 显示温度
-                $("#tempid").text(tempval+"℃");
-                // 显示湿度
-                $("#humiid").text(msgjson.dht11_humidity+'%');
-                // 温度超过29则红灯亮，20-29之间则绿灯亮，低于20黄灯亮
-                if(tempval > "29"){
-                    led_red();
-                    $("#rgbimgid").attr("src", "./image/02-red.svg");
-                }else if(tempval < "30" && (tempval > "19")){
-                    led_green();
-                    $("#rgbimgid").attr("src", "./image/02-green.svg");
-                }else if(tempval < "20"){
-                    led_yellow();
-                    $("#rgbimgid").attr("src", "./image/02-yellow.svg");
-                }
+                // 显示WAN
+                $("#wanid").text(waninval+"/"+wanoutval+"KB/s");
+                // 显示LAN
+                $("#lanid").text(laninval+"/"+lanoutval+"KB/s");
             }
-        }
-
-        // 控制按钮显示的事件
-        $("#switchbtn").click(function() {
-            var topic = device_id+'/in';
-            var commond;
-            var swtimg = $("#switchbtn").attr("src");
-            if("./image/03-turn-on.svg" == swtimg){
-                commond = '{"device_switch":false}';
-                $("#switchbtn").attr("src", "./image/03-turn-off.svg");
-                $("#switchspan").text("关");
-            }else{
-                commond = '{"device_switch":true}';
-                $("#switchbtn").attr("src", "./image/03-turn-on.svg");
-                $("#switchspan").text("开");
-            }
-            client.publish(topic, commond);
-        });
-
-        function led_red() {
-            var topic = device_id+'/in';
-            var commond = '{"rgbled_switch":true,"rgbled_hues":0, "rgbled_saturation":100, "rgbled_brightness":100}'; 
-            client.publish(topic, commond);
-        }
-
-        function led_green() {
-            var topic = device_id+'/in';
-            var commond = '{"rgbled_switch":true,"rgbled_hues":120, "rgbled_saturation":100, "rgbled_brightness":100}'; 
-            client.publish(topic, commond);
-        }
-
-        function led_yellow() {
-            var topic = device_id+'/in';
-            var commond = '{"rgbled_switch":true,"rgbled_hues":60, "rgbled_saturation":100, "rgbled_brightness":100}'; 
-            client.publish(topic, commond);
         }
     }
 
