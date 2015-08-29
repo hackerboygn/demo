@@ -139,7 +139,7 @@
             //     document.getElementById('debug').innerHTML = "";
             // }
             // msgindex++;
-            // console.log('设备上报:' +  message.payloadString);
+            console.log('设备上报:' +  message.payloadString);
             msgjson = $.parseJSON(message.payloadString);
             // console.log('温度 ' +  msgjson.dht11_temperature);
 
@@ -147,13 +147,12 @@
 			var wanoutval = msgjson.snmp_wanout;
 			var laninval = msgjson.snmp_lanin;
 			var lanoutval = msgjson.snmp_lanout;
-            // console.log('温度2 ' +  tempval);
-            if("undefined" != typeof(tempval)){
-                // 显示WAN
-                $("#wanid").text(waninval+"/"+wanoutval+"KB/s");
-                // 显示LAN
-                $("#lanid").text(laninval+"/"+lanoutval+"KB/s");
-            }
+
+			// 显示WAN
+			$("#wanid").text(waninval+"/"+wanoutval+"KB/s");
+			// 显示LAN
+			$("#lanid").text(laninval+"/"+lanoutval+"KB/s");
+
         }
     }
 
