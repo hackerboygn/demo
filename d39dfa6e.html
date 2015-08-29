@@ -180,13 +180,10 @@
 			// 显示CPU负载
 			$("#cpuid").text(cpuload1+" / "+cpuload5+" / "+cpuload15);
 			
-			var time = new Date(msgjson.snmp_time*10);
-			var org = new Date(0);
-			var uptime = time - org;
+			var uptime = new Date(msgjson.snmp_time*10);
 			
 			// 显示运行时间
-			$("#timeid").text(uptime);
-
+			$("#timeid").text(uptime.getDate()+"d"+uptime.getHours()+"h"+uptime.getMinutes()+"m"+uptime.getSeconds()+"s");
         }
     }
 
