@@ -68,7 +68,7 @@
         <div class="wanlanshow">
             <table width="100%" height="94px">
                 <tr align="center">
-                    <td valign="middle" align="right"><img src="./image/02-red.svg" alt=""></td>
+                    <td valign="middle" align="right"><img src="./image/02-yellow.svg" alt=""></td>
                     <td valign="middle" align="left">&nbsp;&nbsp;<span>WAN</span><br/>&nbsp;&nbsp;<span class="wancls" id="wanid">0 KB/s</span></td>
                     <td valign="middle" align="right"><img src="./image/02-green.svg" alt=""></td>
                     <td valign="middle" align="left">&nbsp;&nbsp;<span>LAN</span><br/>&nbsp;&nbsp;<span class="lancls" id="lanid">0 KB/s</span></td>
@@ -159,14 +159,14 @@
             //     document.getElementById('debug').innerHTML = "";
             // }
             // msgindex++;
-            console.log('设备上报:' +  message.payloadString);
+            // console.log('设备上报:' +  message.payloadString);
             msgjson = $.parseJSON(message.payloadString);
             // console.log('温度 ' +  msgjson.dht11_temperature);
 
-			var waninval = msgjson.snmp_wanin/1000;
-			var wanoutval = msgjson.snmp_wanout/1000;
-			var laninval = msgjson.snmp_lanin/1000;
-			var lanoutval = msgjson.snmp_lanout/1000;
+			var waninval = Math.round(msgjson.snmp_wanin/1000);
+			var wanoutval = Math.round(msgjson.snmp_wanout/1000);
+			var laninval = Math.round(msgjson.snmp_lanin/1000);
+			var lanoutval = Math.round(msgjson.snmp_lanout/1000);
 
 			// 显示WAN
 			$("#wanid").text(waninval+"/"+wanoutval+" KB/s");
@@ -180,7 +180,7 @@
 			// 显示CPU负载
 			$("#cpuid").text(cpuload1+" / "+cpuload5+" / "+cpuload15);
 			
-			var uptime = msgjson.snmp_time;
+			var uptime = new Date(msgjson.snmp_time*10);
 			
 			// 显示运行时间
 			$("#timeid").text(uptime);
