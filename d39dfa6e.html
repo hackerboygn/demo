@@ -183,7 +183,7 @@
 			var uptime = new Date(msgjson.snmp_time*10);
 			
 			// 显示运行时间
-			$("#timeid").text(uptime.getDate()+"d"+uptime.getHours()+"h"+uptime.getMinutes()+"m"+uptime.getSeconds()+"s");
+			$("#timeid").text(Math.floor(msgjson.snmp_time/100/24/3600)+"天"+uptime.getHours()+"小时"+uptime.getMinutes()+"分钟"+uptime.getSeconds()+"秒");
         }
     }
 
