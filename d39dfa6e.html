@@ -181,9 +181,10 @@
 			$("#cpuid").text(cpuload1+" / "+cpuload5+" / "+cpuload15);
 			
 			var uptime = new Date(msgjson.snmp_time*10);
+			var tz = uptime.getTimezoneOffset();
 			
 			// 显示运行时间
-			$("#timeid").text(Math.floor(msgjson.snmp_time/100/24/3600)+"天"+uptime.getHours()+"小时"+uptime.getMinutes()+"分钟"+uptime.getSeconds()+"秒");
+			$("#timeid").text(Math.floor(msgjson.snmp_time/100/24/3600)+"天"+uptime.getHours()+"小时"+uptime.getMinutes()+"分钟"+uptime.getSeconds()+"秒"+tz);
         }
     }
 
