@@ -68,9 +68,9 @@
         <div class="wanlanshow">
             <table width="100%" height="94px">
                 <tr align="center">
-                    <td valign="middle" align="right"><img src="./image/01-temperature.svg" alt=""></td>
+                    <td valign="middle" align="right"><img src="./image/02-red.svg" alt=""></td>
                     <td valign="middle" align="left">&nbsp;&nbsp;<span>WAN</span><br/>&nbsp;&nbsp;<span class="wancls" id="wanid">0 KB/s</span></td>
-                    <td valign="middle" align="right"><img src="./image/01-humidity.svg" alt=""></td>
+                    <td valign="middle" align="right"><img src="./image/02-green.svg" alt=""></td>
                     <td valign="middle" align="left">&nbsp;&nbsp;<span>LAN</span><br/>&nbsp;&nbsp;<span class="lancls" id="lanid">0 KB/s</span></td>
                 </tr>
             </table>
@@ -79,9 +79,9 @@
             <table width="100%" height="94px">
                 <tr align="center">
                     <td valign="middle" align="right"><img src="./image/01-temperature.svg" alt=""></td>
-                    <td valign="middle" align="left">&nbsp;&nbsp;<span>WAN</span><br/>&nbsp;&nbsp;<span class="wancls" id="cpuid">0 / 0 / 0</span></td>
-                    <td valign="middle" align="right"><img src="./image/01-humidity.svg" alt=""></td>
-                    <td valign="middle" align="left">&nbsp;&nbsp;<span>LAN</span><br/>&nbsp;&nbsp;<span class="lancls" id="timeid">0</span></td>
+                    <td valign="middle" align="left">&nbsp;&nbsp;<span>CPU负载</span><br/>&nbsp;&nbsp;<span class="wancls" id="cpuid">0 / 0 / 0</span></td>
+                    <td valign="middle" align="right"><img src="./image/03-turn-on.svg" alt=""></td>
+                    <td valign="middle" align="left">&nbsp;&nbsp;<span>运行时间</span><br/>&nbsp;&nbsp;<span class="lancls" id="timeid">0</span></td>
                 </tr>
             </table>
         </div>  		
@@ -172,6 +172,18 @@
 			$("#wanid").text(waninval+"/"+wanoutval+" KB/s");
 			// 显示LAN
 			$("#lanid").text(laninval+"/"+lanoutval+" KB/s");
+			
+			var cpuload1 = msgjson.snmp_cpuload1;
+			var cpuload5 = msgjson.snmp_cpuload5;
+			var cpuload15 = msgjson.snmp_cpuload15;
+			
+			// 显示CPU负载
+			$("#cpuid").text(cpuload1+" / "+cpuload5+" / "+cpuload15);
+			
+			var uptime = msgjson.snmp_time;
+			
+			// 显示运行时间
+			$("#timeid").text(uptime);
 
         }
     }
